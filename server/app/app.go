@@ -71,7 +71,8 @@ type word struct {
 }
 
 type gametime struct {
-	Time int `json:"time"`
+	Time int    `json:"time"`
+	Kind string `json:"kind"`
 }
 
 const (
@@ -90,7 +91,7 @@ var (
 	compareRegex    = re.MustCompile(`[^a-z]`)
 	conns           = make([]*websocket.Conn, 0, maxConns)
 	gameobj         = game{InProgress: false}
-	messageChannel  = make(chan interface{})
+	messageChannel  = make(chan any)
 	nameList        = make([]string, 0, 16)
 	numAns          = 0
 	sanitizeMessage = sanitizeMessageFactory(sanitizeRegex)
@@ -100,12 +101,7 @@ var (
 )
 
 func checkForDuplicateName(s string, names []string) bool {
-	for _, n := range names {
-		if n == s {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(names, s)
 }
 
 type stringList []string
@@ -213,7 +209,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 				const startDelay = 6
 				sig, sig2, timerDone := make(chan bool), make(chan bool), make(chan bool)
 				ticker := time.NewTicker(time.Second)
-				go handleTimers(timerDone, ticker, startDelay)
+				go handleTimers(timerDone, ticker, startDelay, 1, "start")
 				time.Sleep(startDelay * time.Second)
 				ticker.Stop()
 				timerDone <- true
@@ -225,6 +221,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		case msg.Message == "keepAlive":
 		case len(*msg.Answer) > -1:
 			ans := sanitizeMessage(*msg.Answer)
+			log.Println("answer: ", ans)
 			clients[ws] = clients[ws].UpdatePlayerAnswer(ans)
 			answerChannel <- answer{Answer: processAnswers(ans, compareRegex), Conn: ws}
 		default:
@@ -266,6 +263,14 @@ func handleAnswers(s, s2 chan bool) {
 func sendWords(s, s2 chan bool) {
 	for msg := range serveGame(wordList, s, s2) {
 		messageChannel <- word{Word: msg}
+		const wordtime = 1000
+		timerDone := make(chan bool)
+		ticker := time.NewTicker(time.Second)
+		go handleTimers(timerDone, ticker, wordtime, 25, "word")
+		time.Sleep(41 * time.Second)
+		ticker.Stop()
+		timerDone <- true
+		close(timerDone)
 		go handleAnswers(s, s2)
 	}
 }
@@ -288,14 +293,14 @@ func serveGame(wl []string, s, s2 chan bool) (ch chan string) {
 	return
 }
 
-func handleTimers(done chan bool, tick *time.Ticker, countdown int) {
+func handleTimers(done chan bool, tick *time.Ticker, countdown, decr int, kind string) {
 	for {
 		select {
 		case <-done:
 			return
 		case <-tick.C:
-			messageChannel <- gametime{Time: countdown}
-			countdown--
+			messageChannel <- gametime{Time: countdown, Kind: kind}
+			countdown -= decr
 		}
 	}
 }
@@ -303,6 +308,7 @@ func handleTimers(done chan bool, tick *time.Ticker, countdown int) {
 func handlePlayerMessages() {
 	for {
 		msg := <-messageChannel
+		log.Println("message: ", msg)
 		for client := range clients {
 			err := client.WriteJSON(msg)
 			if err != nil {

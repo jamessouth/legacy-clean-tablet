@@ -13,6 +13,7 @@ const initialState = {
 const ws = new WebSocket(import.meta.env.VITE_WS);
 
 function UseAppState() {
+  const [strkos, setStrkos] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [connected, setConnected] = useState(false);
   const [dupeName, setDupeName] = useState(false);
@@ -46,9 +47,10 @@ function UseAppState() {
     ws.addEventListener(
       'message',
       function (e) {
-        const { message, player, players, time, winners, word } = JSON.parse(
-          e.data
-        );
+        const { message, player, players, time, kind, winners, word } =
+          JSON.parse(e.data);
+
+        console.log(message, player, players, time, kind, winners, word);
 
         switch (true) {
           case !!message:
@@ -83,9 +85,16 @@ function UseAppState() {
             setDupeName(false);
             break;
           case !!time:
-            setShowStartTimer(true);
-            setShowStartButton(false);
-            setTimer(time - 1);
+            if (kind == 'word') {
+              setStrkos(1000 - time);
+              if (time == 0) {
+                setSubmitSignal(true);
+              }
+            } else {
+              setShowStartTimer(true);
+              setShowStartButton(false);
+              setTimer(time - 1);
+            }
             break;
           case !!winners:
             dispatch({ type: 'winners', winners });
@@ -183,13 +192,14 @@ function UseAppState() {
     players,
     send,
     setShowStartButton,
-    setSubmitSignal,
+    // setSubmitSignal,
     showAnswers,
     showReset,
     showStartButton,
     showStartTimer,
     showSVGTimer,
     showWords,
+    strkos,
     submitSignal,
     timer,
     winners,

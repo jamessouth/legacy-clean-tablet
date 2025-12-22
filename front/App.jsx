@@ -26,13 +26,14 @@ function App() {
     players,
     send,
     setShowStartButton,
-    setSubmitSignal,
+    // setSubmitSignal,
     showAnswers,
     showReset,
     showStartButton,
     showStartTimer,
     showSVGTimer,
     showWords,
+    strkos,
     submitSignal,
     timer,
     winners,
@@ -71,10 +72,11 @@ function App() {
           {showStartTimer && timer > 0 && <Timer timer={timer} />}
           {showWords && hasJoined && !winners && (
             <Word
-              onAnimationEnd={() => setSubmitSignal(true)}
+              //   onAnimationEnd={() => setSubmitSignal(true)}
               playerColor={playerColor}
               showAnswers={showAnswers}
               showSVGTimer={showSVGTimer}
+              strkos={strkos}
               word={newWord}
             />
           )}
