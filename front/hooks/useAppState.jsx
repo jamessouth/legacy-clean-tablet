@@ -84,7 +84,7 @@ function UseAppState() {
             dispatch({ type: 'players', players });
             setDupeName(false);
             break;
-          case !!time:
+          case !!kind:
             if (kind == 'word') {
               setStrkos(1000 - time);
               if (time == 0) {

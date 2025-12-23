@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { bg, inv, signin } from '../styles/Form.module.css';
 import UseFormState from '../hooks/useFormState';
+import { bg, inv, signin } from '../styles/Form.module.css';
 
 function Form({
   answered,
@@ -51,7 +51,7 @@ function Form({
         ref={inputBox}
         value={inputText}
         spellCheck="false"
-        onKeyPress={({ key }) => {
+        onKeyDown={({ key }) => {
           if (key == 'Enter' && !disableSubmit) {
             onEnter(inputText.slice(0, ANSWER_MAX_LENGTH));
             setInputText('');
