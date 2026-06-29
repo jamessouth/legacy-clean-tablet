@@ -1,8 +1,8 @@
 {
-  "name": "clean-tablet",
+  "name": "legacy-clean-tablet",
   "private": true,
-  "version": "2.0.0",
-  "description": "update of clone of Blank Slate, a party game",
+  "version": "3.0.0",
+  "description": "clone of Blank Slate, a party game",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,22 +11,22 @@
     "preview": "vite preview",
     "server": "go run server/main.go",
     "cover": "go tool cover -html c.out",
-    "test:app": "go test -v github.com/jamessouth/clean-tablet/server/app",
-    "test:app:coverage": "go test -coverprofile c.out github.com/jamessouth/clean-tablet/server/app",
-    "test:clients": "go test -v github.com/jamessouth/clean-tablet/server/clients",
-    "test:clients:coverage": "go test -coverprofile c.out github.com/jamessouth/clean-tablet/server/clients",
-    "test:data:words": "go test -v github.com/jamessouth/clean-tablet/server/data"
+    "test:app": "go test -v github.com/jamessouth/legacy-clean-tablet/server/app",
+    "test:app:coverage": "go test -coverprofile c.out github.com/jamessouth/legacy-clean-tablet/server/app",
+    "test:clients": "go test -v github.com/jamessouth/legacy-clean-tablet/server/clients",
+    "test:clients:coverage": "go test -coverprofile c.out github.com/jamessouth/legacy-clean-tablet/server/clients",
+    "test:data:words": "go test -v github.com/jamessouth/legacy-clean-tablet/server/data"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jamessouth/clean-tablet.git"
+    "url": "git+https://github.com/jamessouth/legacy-clean-tablet.git"
   },
   "author": "james south",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jamessouth/clean-tablet/issues"
+    "url": "https://github.com/jamessouth/legacy-clean-tablet/issues"
   },
-  "homepage": "https://github.com/jamessouth/clean-tablet#readme",
+  "homepage": "https://github.com/jamessouth/legacy-clean-tablet#readme",
   "dependencies": {
     "react": "19.2.0",
     "react-dom": "19.2.0"
