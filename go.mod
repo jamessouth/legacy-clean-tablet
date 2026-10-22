@@ -1,6 +1,6 @@
 module github.com/jamessouth/legacy-clean-tablet
 
-go 1.26.4
+go 1.27.3
 
 require (
 	github.com/google/go-cmp v0.7.0

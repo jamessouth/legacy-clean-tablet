@@ -41,7 +41,7 @@ function UseAppState() {
       function () {
         setConnected(true);
       },
-      false
+      false,
     );
 
     ws.addEventListener(
@@ -116,7 +116,7 @@ function UseAppState() {
             console.log('no case found: ', e.data);
         }
       },
-      false
+      false,
     );
 
     ws.addEventListener(
@@ -124,7 +124,7 @@ function UseAppState() {
       function (e) {
         console.log(e, Date.now());
       },
-      false
+      false,
     );
 
     ws.addEventListener(
@@ -132,7 +132,7 @@ function UseAppState() {
       function () {
         setConnected(false);
       },
-      false
+      false,
     );
 
     return function cleanup() {
@@ -153,7 +153,7 @@ function UseAppState() {
       ws.send(
         JSON.stringify({
           name: text,
-        })
+        }),
       );
     } else {
       setAnswered(true);
@@ -162,7 +162,7 @@ function UseAppState() {
       ws.send(
         JSON.stringify({
           answer: text,
-        })
+        }),
       );
     }
   }
@@ -171,7 +171,7 @@ function UseAppState() {
     ws.send(
       JSON.stringify({
         message: msg,
-      })
+      }),
     );
   }
 

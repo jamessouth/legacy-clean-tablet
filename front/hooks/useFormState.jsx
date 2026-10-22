@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function UseFormState(
   answered,
@@ -6,7 +6,7 @@ function UseFormState(
   invalidInput,
   onEnter,
   playing,
-  submitSignal
+  submitSignal,
 ) {
   const inputBox = useRef(null);
   const NAME_MAX_LENGTH = 10;
@@ -55,7 +55,7 @@ function UseFormState(
         answered ||
         invalidInput ||
         !isValidInput ||
-        (hasJoined && !playing)
+        (hasJoined && !playing),
     );
   }, [
     inputText,

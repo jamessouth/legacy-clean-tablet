@@ -27,7 +27,7 @@ function Form({
     invalidInput,
     onEnter,
     playing,
-    submitSignal
+    submitSignal,
   );
 
   return (
@@ -41,8 +41,8 @@ function Form({
         {dupeName
           ? 'That name is taken!'
           : playerName
-          ? 'Enter your answer:'
-          : 'Please sign in:'}
+            ? 'Enter your answer:'
+            : 'Please sign in:'}
       </label>
       <input
         id="inputbox"
